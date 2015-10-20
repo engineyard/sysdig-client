@@ -1,4 +1,4 @@
-class Sysdig::Client::Real
+class Sysdig::Real
   attr_reader :url, :path, :connection, :parser, :logger, :adapter, :authentication
 
   def initialize(options={})

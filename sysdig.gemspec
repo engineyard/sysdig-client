@@ -31,7 +31,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "rake", "~> 10.0"
   spec.add_development_dependency "rspec"
 
-  spec.add_dependency "cistern",            "~> 2.0"
+  spec.add_dependency "cistern",            "~> 2.2"
   spec.add_dependency "ey-logger",          "~> 0.0"
   spec.add_dependency "faraday",            "~> 0.9"
   spec.add_dependency "faraday_middleware", "~> 0.9"

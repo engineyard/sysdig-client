@@ -1,4 +1,4 @@
-class Sysdig::Client::Notification < Sysdig::Client::Model
+class Sysdig::Notification < Sysdig::Model
 
   identity :id, type: :integer
 

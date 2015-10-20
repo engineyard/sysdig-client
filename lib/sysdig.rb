@@ -1,13 +1,36 @@
 require "sysdig/version"
 
-# libs
 require "cistern"
+require "faraday"
+require "faraday_middleware"
+require "faraday/cookie_jar"
+require "logger"
 require "ey/logger"
 require "ey/logger/faraday"
-require "faraday"
-require "faraday-cookie_jar"
-require "faraday_middleware"
 
-module Sysdig; end
+class Sysdig
+  include Cistern::Client
 
-require 'sysdig/client'
+  recognizes :url, :adapter, :logger
+  requires :username, :password
+
+end
+
+# clients
+require 'sysdig/real'
+require 'sysdig/mock'
+require 'sysdig/model'
+require 'sysdig/response'
+
+require 'sysdig/login'
+
+require 'sysdig/alert'
+require 'sysdig/alerts'
+require 'sysdig/create_alert'
+require 'sysdig/get_alert'
+require 'sysdig/get_alerts'
+
+require 'sysdig/get_notification'
+require 'sysdig/get_notifications'
+require 'sysdig/notification'
+require 'sysdig/notifications'

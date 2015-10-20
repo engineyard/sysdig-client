@@ -1,4 +1,4 @@
-class Sysdig::Client::Mock
+class Sysdig::Mock
   def self.data
     @@data ||= Hash.new { |h,url|
       h[url] = {

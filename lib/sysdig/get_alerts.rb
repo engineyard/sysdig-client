@@ -1,4 +1,4 @@
-class Sysdig::Client::GetAlerts < Sysdig::Client::Request
+class Sysdig::GetAlerts < Sysdig::Request
   def real(params={})
     service.request(
       :method => :get,
