@@ -34,7 +34,7 @@ class Sysdig::Real
     @authenticated  = false
   end
 
-  def request(options={})
+  def request_with_authentication(options={})
     if !@authenticated
       @authentication.synchronize {
         if !@authenticated
@@ -44,20 +44,10 @@ class Sysdig::Real
       }
     end
 
-    _request(options)
+    request_without_authentication(options)
   end
 
-  def authenticate!
-    _request(
-      :method => :post,
-      :path   => "/api/login",
-      :params => { username: @username, password: @password },
-    )
-  end
-
-  protected
-
-  def _request(options={})
+  def request_without_authentication(options={})
     method  = (options[:method] || "get").to_s.downcase.to_sym
     url     = URI.parse(options[:url] || File.join(@url.to_s, options[:path] || "/"))
     params  = options[:params] || {}
@@ -92,4 +82,6 @@ class Sysdig::Real
       }
     ).raise!
   end
+
+  alias_method :request, :request_with_authentication
 end

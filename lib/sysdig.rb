@@ -29,6 +29,7 @@ require 'sysdig/alerts'
 require 'sysdig/create_alert'
 require 'sysdig/get_alert'
 require 'sysdig/get_alerts'
+require 'sysdig/update_alert'
 
 require 'sysdig/get_notification'
 require 'sysdig/get_notifications'
