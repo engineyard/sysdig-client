@@ -8,7 +8,7 @@ RSpec.describe Sysdig::Alerts do
   end
 
   context "with some alerts" do
-    let!(:alert1) { create_alert(client: client) }
+    let!(:alert1) { create_alert(client: client, alert: {timespan: 60_000_000}) }
     let!(:alert2) { create_alert(client: client) }
 
     it "lists alerts" do
@@ -23,6 +23,10 @@ RSpec.describe Sysdig::Alerts do
       ).to(
         containing_exactly(alert2)
       )
+    end
+
+    it "calms down microsecond timespans" do
+      expect(alert1.timespan).to eq(60)
     end
   end
 end

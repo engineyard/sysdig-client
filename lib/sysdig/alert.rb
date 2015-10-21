@@ -30,7 +30,7 @@ class Sysdig::Alert < Sysdig::Model
   attribute :segment_by,         alias: "segmentBy"
   attribute :segment_condition,  alias: "segmentCondition"
   attribute :targets,            type:  :array
-  attribute :timespan,           type:  :integer
+  attribute :timespan,           parser: lambda { |v, _| i = v.to_i; i > 1_000_000 ? i / 1_000_000 : i }
   attribute :type,               parser: lambda { |v, _| v.to_s.upcase }
   attribute :version,            type:  :integer
 
@@ -54,7 +54,7 @@ class Sysdig::Alert < Sysdig::Model
       "segmentBy"         => self.segment_by,
       "segmentCondition"  => self.segment_condition,
       "severity"          => self.severity,
-      "timespan"          => self.timespan,
+      "timespan"          => self.timespan * 1_000_000,
       "type"              => self.type,
     }
 

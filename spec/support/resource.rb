@@ -1,34 +1,18 @@
 module ResourceHelper
-  def create_alert(alert={}, client: create_client)
+  def create_alert(client: create_client, alert: {})
     tag = SecureRandom.uuid
 
     client.alerts.create(
-      type: "MANUAL",
-      name: Faker::Company.name,
-      description: Faker::Lorem.sentence,
-      enabled: true,
-      filter: "agent.tag.id = \"#{tag}\"",
-      severity: rand(0..9),
-      notify: [ ],
-      timespan: 60000000,
-      targets: [
-        {
-          subTarget: [
-            {
-              metric: "agent.tag.id",
-              value: tag
-            }
-          ]
-        }
-      ],
-      notificationCount: 0,
-      condition: "timeAvg(uptime) = 0",
-      groupAggregations: [
-        {
-          metric: "uptime",
-          aggregation: "avg"
-        }
-      ]
+      :type              => alert[:type] || "manual",
+      :name              => alert[:name] || Faker::Company.name,
+      :description       => alert[:description] || Faker::Lorem.sentence,
+      :enabled           => alert.fetch(:enabled, true),
+      :filter            => alert[:filter] || "agent.tag.id = \"#{tag}\"",
+      :severity          => alert[:severity] || rand(0..9),
+      :notify            => alert[:notify] || [ ],
+      :timespan          => alert[:timespan] || 60,
+      :notificationCount => 0,
+      :condition         => alert[:condition] || "timeAvg(uptime) = 0",
     )
   end
 end
