@@ -19,8 +19,8 @@ class Sysdig::Alert < Sysdig::Model
   attribute :description
   attribute :enabled,            type:  :boolean,     default: true
   attribute :filter,             parser: lambda { |v, _| load_filter(v) }
-  attribute :group_aggregations, type:  :array,       alias:  "groupAggregations"
-  attribute :group_by,           type:  :array,       alias:  "groupBy"
+  attribute :group_aggregations, type:  :array,       alias: "groupAggregations"
+  attribute :group_by,           type:  :array,       alias: "groupBy"
   attribute :group_condition,    alias: "groupCondition"
   attribute :modified_at,        alias: "modifiedOn", parser: method(:epoch_time)
   attribute :name
@@ -34,17 +34,28 @@ class Sysdig::Alert < Sysdig::Model
   attribute :type,               parser: lambda { |v, _| v.to_s.upcase }
   attribute :version,            type:  :integer
 
+  def destroy
+    requires :identity
+
+    service.destroy_alert(identity)
+  end
+
   def save
     params = {
-      "name"        => self.name,
-      "description" => self.description,
-      "enabled"     => self.enabled,
-      "filter"      => self.class.dump_filter(filter || {}),
-      "type"        => self.type,
-      "condition"   => self.condition,
-      "timespan"    => self.timespan,
-      "severity"    => self.severity,
-      "notify"      => self.notify,
+      "condition"         => self.condition,
+      "description"       => self.description,
+      "enabled"           => self.enabled,
+      "filter"            => self.class.dump_filter(filter || {}),
+      "groupAggregations" => self.group_aggregations,
+      "groupBy"           => self.group_by,
+      "groupCondition"    => self.group_condition,
+      "name"              => self.name,
+      "notify"            => self.notify,
+      "segmentBy"         => self.segment_by,
+      "segmentCondition"  => self.segment_condition,
+      "severity"          => self.severity,
+      "timespan"          => self.timespan,
+      "type"              => self.type,
     }
 
     data = (

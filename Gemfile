@@ -4,4 +4,5 @@ gemspec
 
 group :test do
   gem 'pry-nav', '~> 0.2'
+  gem 'faker'
 end

@@ -22,12 +22,8 @@ class Sysdig::UserNotification < Sysdig::Model
 
   attribute :enabled, type: :boolean
 
-  def type
-    self.class.type
-  end
-
   def initialize(attributes={})
-    self.identity = self.type
+    self.identity = self.class.type
 
     super
   end

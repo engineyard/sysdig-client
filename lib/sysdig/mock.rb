@@ -1,4 +1,10 @@
 class Sysdig::Mock
+  def self.reset!
+    super
+
+    @id = 0
+  end
+
   def self.data
     @@data ||= Hash.new { |h,url|
       h[url] = {
@@ -59,5 +65,10 @@ class Sysdig::Mock
 
   def data
     self.class.data[self.url]
+  end
+
+  def serial_id
+    @id ||= 0
+    @id += 1
   end
 end
