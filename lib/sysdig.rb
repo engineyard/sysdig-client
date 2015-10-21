@@ -11,8 +11,7 @@ require "ey/logger/faraday"
 class Sysdig
   include Cistern::Client
 
-  recognizes :url, :adapter, :logger
-  requires :username, :password
+  recognizes :url, :adapter, :logger, :token, :username, :password
 
 end
 

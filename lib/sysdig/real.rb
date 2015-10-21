@@ -1,5 +1,6 @@
 class Sysdig::Real
-  attr_reader :url, :path, :connection, :parser, :logger, :adapter, :authentication
+
+  attr_reader :url, :path, :connection, :parser, :logger, :adapter, :authentication, :token
 
   def initialize(options={})
     @url = URI.parse(options[:url] || "https://app.sysdigcloud.com")
@@ -7,6 +8,15 @@ class Sysdig::Real
     adapter            = options[:adapter]            || Faraday.default_adapter
     connection_options = options[:connection_options] || {}
     logger, @logger    = options[:logger]             || Logger.new(nil)
+
+    @username, @password = *options.values_at(:username, :password)
+
+    unless @username && @password
+      token = @token = options.fetch(:token)
+    end
+
+    @authentication = Mutex.new
+    @authenticated  = false
 
     @connection = Faraday.new({url: @url}.merge(connection_options)) do |builder|
       # response
@@ -20,22 +30,22 @@ class Sysdig::Real
         :backoff_factor      => 2
       builder.request :multipart
       builder.request :json
-      builder.use :cookie_jar
+
+      if token
+        builder.authorization :Bearer, token
+      else
+        builder.use :cookie_jar
+      end
 
       builder.use Faraday::Response::RaiseError
       builder.use Ey::Logger::Faraday, format: :machine, device: logger
 
       builder.adapter(*adapter)
     end
-
-    @username, @password = *options.values_at(:username, :password)
-
-    @authentication = Mutex.new
-    @authenticated  = false
   end
 
   def request_with_authentication(options={})
-    if !@authenticated
+    if !@authenticated && token.nil?
       @authentication.synchronize {
         if !@authenticated
           login(@username, @password)

@@ -24,7 +24,7 @@ class Sysdig::Alert < Sysdig::Model
   attribute :group_condition,    alias: "groupCondition"
   attribute :modified_at,        alias: "modifiedOn", parser: method(:epoch_time)
   attribute :name
-  attribute :notification_count, type:  :integer,     alias:  "notificationCount"
+  attribute :notification_count, type:  :integer,     alias: "notificationCount"
   attribute :notify,             parser: lambda { |v, _| Array(v).map { |x| x.upcase } }
   attribute :severity,           type:  :integer
   attribute :segment_by,         alias: "segmentBy"
