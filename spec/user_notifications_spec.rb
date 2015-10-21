@@ -16,4 +16,17 @@ RSpec.describe Sysdig::UserNotifications do
       Sysdig::SnsNotification.new(enabled: false, topics: [])
     )
   end
+
+  it "updates sns topics" do
+    sns = client.user_notifications.get(:sns)
+    topic = SecureRandom.uuid
+
+    expect {
+      sns.topics << topic
+      sns.save
+    }.to change {
+      client.user_notifications.get(:sns).topics
+    }.from([]).to(containing_exactly(topic)).
+    and change { sns.topics }.from([]).to(containing_exactly(topic))
+  end
 end

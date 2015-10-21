@@ -20,12 +20,12 @@ class Sysdig::UpdateUserNotifications < Sysdig::Request
       u = user_notification[type]
 
       if u
-        r.merge!(Cistern::Hash.slice(u, *keys))
+        r.merge!(type => Cistern::Hash.slice(u, *keys))
       end
     }
 
     service.response(
-      :body => { "userNotification" => service.data[:user_notification].merge!(sliced) },
+      :body => { "userNotification" => service.data[:user_notifications].merge!(sliced) },
     )
   end
 end
