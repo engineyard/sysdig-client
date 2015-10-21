@@ -3,6 +3,22 @@ class Sysdig::Mock
     @@data ||= Hash.new { |h,url|
       h[url] = {
         :alerts => {},
+        :user_notifications => {
+          "email" => {
+            "enabled"    => false,
+            "recipients" => []
+          },
+          "sns" => {
+            "enabled" => false,
+            "topics"  => []
+          },
+          "pagerDuty" => {
+            "enabled"     => false,
+            "integrated"  => false,
+            "resolveOnOk" => false,
+            "connectUrl"  => "https://connect.pagerduty.com/connect?vendor=x&callback=https://app.sysdigcloud.com/api/pagerDuty/callback/y/z"
+          }
+        }
       }
     }
   end

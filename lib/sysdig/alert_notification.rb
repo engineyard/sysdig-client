@@ -1,4 +1,4 @@
-class Sysdig::Notification < Sysdig::Model
+class Sysdig::AlertNotification < Sysdig::Model
 
   identity :id, type: :integer
 

@@ -1,6 +1,6 @@
-class Sysdig::Notifications < Sysdig::Collection
+class Sysdig::AlertNotifications < Sysdig::Collection
 
-  model Sysdig::Notification
+  model Sysdig::AlertNotification
 
   def all(options={})
     to   = options[:to]   || Time.now
