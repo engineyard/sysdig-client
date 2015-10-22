@@ -28,5 +28,17 @@ RSpec.describe Sysdig::Alerts do
     it "calms down microsecond timespans" do
       expect(alert1.timespan).to eq(60)
     end
+
+    it "parses nil filter" do
+      alert1.filter = nil
+      expect(alert1.filter).to eq(nil)
+
+      alert1.filter = []
+      expect(alert1.filter).to eq(nil)
+
+      tag = SecureRandom.uuid
+      alert1.filter = "agent.tag.id = \"#{tag}\""
+      expect(alert1.filter).to eq("agent.tag.id" => tag)
+    end
   end
 end

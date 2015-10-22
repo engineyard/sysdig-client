@@ -1,24 +1,12 @@
 class Sysdig::Alert < Sysdig::Model
 
-  def self.dump_filter(hash)
-    hash.map { |k,v| [k, normalize_filter_condition(v).inspect].join(" = ") }.join(", ")
-  end
-
-  def self.load_filter(string)
-    string.split(", ").map { |t| t.split(" = ") }.inject({}) { |r,(k,c)| r.merge(k => normalize_filter_condition(c)) }
-  end
-
-  def self.normalize_filter_condition(string)
-    string.gsub(/(^\\?\")|(\\?\"$)/, "")
-  end
-
   identity :id, type: :integer
 
   attribute :condition
   attribute :created_at,         alias: "createdOn",  parser: method(:epoch_time)
   attribute :description
   attribute :enabled,            type:  :boolean,     default: true
-  attribute :filter,             parser: lambda { |v, _| load_filter(v) }
+  attribute :filter,             parser: lambda { |v, _| Sysdig::AlertFilter.load(v) }
   attribute :group_aggregations, type:  :array,       alias: "groupAggregations"
   attribute :group_by,           type:  :array,       alias: "groupBy"
   attribute :group_condition,    alias: "groupCondition"
@@ -45,7 +33,7 @@ class Sysdig::Alert < Sysdig::Model
       "condition"         => self.condition,
       "description"       => self.description,
       "enabled"           => self.enabled,
-      "filter"            => self.class.dump_filter(filter || {}),
+      "filter"            => Sysdig::AlertFilter.dump(filter || {}),
       "groupAggregations" => self.group_aggregations,
       "groupBy"           => self.group_by,
       "groupCondition"    => self.group_condition,
