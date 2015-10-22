@@ -33,6 +33,11 @@ RSpec.describe Sysdig::Alerts do
 
       alert1.timespan = 3
       expect(alert1.timespan).to eq(3)
+
+      alert1.save # PUT
+      expect(alert1.timespan).to eq(3)
+      alert1.reload # GET
+      expect(alert1.timespan).to eq(3)
     end
 
     it "parses nil filter" do

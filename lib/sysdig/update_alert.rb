@@ -7,4 +7,14 @@ class Sysdig::UpdateAlert < Sysdig::Request
       :body   => { "alert" => Sysdig::CreateAlert.slice(alert) },
     )
   end
+
+  def mock(alert_id, alert)
+    body = service.data[:alerts].fetch(alert_id.to_i)
+
+    body.merge!(Sysdig::CreateAlert.slice(alert))
+
+    service.response(
+      :body => {"alert" => body},
+    )
+  end
 end
