@@ -24,6 +24,7 @@ require 'sysdig/response'
 require 'sysdig/login'
 
 require 'sysdig/alert_filter'
+
 require 'sysdig/alert'
 require 'sysdig/alerts'
 require 'sysdig/create_alert'

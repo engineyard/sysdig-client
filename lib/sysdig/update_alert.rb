@@ -4,7 +4,7 @@ class Sysdig::UpdateAlert < Sysdig::Request
     service.request(
       :method => :put,
       :path   => File.join("/api/alerts", alert_id.to_s),
-      :body   => { "alert" => alert },
+      :body   => { "alert" => Sysdig::CreateAlert.slice(alert) },
     )
   end
 end

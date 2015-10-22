@@ -13,10 +13,10 @@ class Sysdig::Alert < Sysdig::Model
   attribute :modified_at,        alias: "modifiedOn", parser: method(:epoch_time)
   attribute :name
   attribute :notification_count, type:  :integer,     alias: "notificationCount"
-  attribute :notify,             parser: lambda { |v, _| Array(v).map { |x| x.upcase } }
-  attribute :severity,           type:  :integer
+  attribute :notify,             parser: lambda { |v, _| (Array(v) || []).map { |x| x.to_s.upcase } }
   attribute :segment_by,         alias: "segmentBy"
   attribute :segment_condition,  alias: "segmentCondition"
+  attribute :severity,           type:  :integer
   attribute :targets,            type:  :array
   attribute :timespan,           parser: lambda { |v, _| i = v.to_i; i > 1_000_000 ? i / 1_000_000 : i }
   attribute :type,               parser: lambda { |v, _| v.to_s.upcase }

@@ -27,6 +27,12 @@ RSpec.describe Sysdig::Alerts do
 
     it "calms down microsecond timespans" do
       expect(alert1.timespan).to eq(60)
+
+      alert1.timespan = 3_000_000
+      expect(alert1.timespan).to eq(3)
+
+      alert1.timespan = 3
+      expect(alert1.timespan).to eq(3)
     end
 
     it "parses nil filter" do
