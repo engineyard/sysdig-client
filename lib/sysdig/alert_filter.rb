@@ -16,6 +16,6 @@ class Sysdig::AlertFilter
   end
 
   def self.normalize_condition(string)
-    string.gsub(/(^\\?\")|(\\?\"$)/, "")
+    string.gsub(/(^\\?['"])|(\\?['"]$)/, "")
   end
 end

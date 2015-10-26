@@ -1,7 +1,15 @@
 class Sysdig::GetAlertNotification < Sysdig::Request
   def real(notification_id)
     service.request(
-      :path => "/api/notifications/#{notification_id}",
+      :path => File.join("/api/notifications", notification_id.to_s),
+    )
+  end
+
+  def mock(notification_id)
+    service.response(
+      :body => {
+        "notification" => service.data[:alert_notifications].fetch(notification_id)
+      },
     )
   end
 end

@@ -12,7 +12,6 @@ class Sysdig
   include Cistern::Client
 
   recognizes :url, :adapter, :logger, :token, :username, :password
-
 end
 
 # clients
@@ -35,6 +34,7 @@ require 'sysdig/update_alert'
 
 require 'sysdig/get_alert_notification'
 require 'sysdig/get_alert_notifications'
+require 'sysdig/update_alert_notification'
 require 'sysdig/alert_notification'
 require 'sysdig/alert_notifications'
 
