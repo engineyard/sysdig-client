@@ -18,8 +18,8 @@ class Sysdig::Alert < Sysdig::Model
   attribute :segment_condition,  alias: "segmentCondition"
   attribute :severity,           type:  :integer
   attribute :targets,            type:  :array
-  attribute :timespan,           parser: lambda { |v, _| i = v.to_i; i > 1_000_000 ? i / 1_000_000 : i }
-  attribute :type,               parser: lambda { |v, _| v.to_s.upcase }
+  attribute :timespan,           parser: method(:microsecond_datetime)
+  attribute :type,               parser: method(:upcase)
   attribute :version,            type:  :integer
 
   def destroy
