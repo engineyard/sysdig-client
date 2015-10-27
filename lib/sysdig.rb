@@ -40,8 +40,4 @@ require 'sysdig/alert_notifications'
 
 require 'sysdig/get_user_notifications'
 require 'sysdig/update_user_notifications'
-require 'sysdig/user_notification'
 require 'sysdig/user_notifications'
-require 'sysdig/sns_notification'
-require 'sysdig/email_notification'
-require 'sysdig/pager_duty_notification'

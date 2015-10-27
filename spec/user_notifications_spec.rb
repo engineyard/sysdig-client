@@ -4,29 +4,31 @@ RSpec.describe Sysdig::UserNotifications do
   let!(:client) { create_client }
 
   it "lists user notifications" do
-    expect(client.user_notifications.to_a).to contain_exactly(
-      Sysdig::EmailNotification.new(enabled: false, recipients: []),
-      Sysdig::PagerDutyNotification.new(enabled: false, integrated: false, bind_resolution: false, connect_url: a_string_matching("connect.pagerduty.com")),
-      Sysdig::SnsNotification.new(enabled: false, topics: []),
-    )
-  end
+    default_notifications = client.user_notifications
 
-  it "fetches a specific user notification" do
-    expect(client.user_notifications.get(:sns)).to eq(
-      Sysdig::SnsNotification.new(enabled: false, topics: [])
-    )
+    expect(default_notifications.email_enabled).to      eq(false)
+    expect(default_notifications.sns_enabled).to        eq(false)
+    expect(default_notifications.pager_duty_enabled).to eq(false)
+
+    expect(default_notifications.email_recipients).to eq([])
+
+    expect(default_notifications.sns_topics).to eq([])
+
+    expect(default_notifications.pager_duty_integrated).to eq(false)
+    expect(default_notifications.pager_duty_bind_resolution).to eq(false)
+    expect(default_notifications.pager_duty_connect_url).to match("connect.pagerduty.com")
   end
 
   it "updates sns topics" do
-    sns = client.user_notifications.get(:sns)
-    topic = SecureRandom.uuid
+    uns = client.user_notifications
+    uns.sns_topics << (topic = SecureRandom.uuid)
 
     expect {
-      sns.topics << topic
-      sns.save
+      uns.save
     }.to change {
-      client.user_notifications.get(:sns).topics
-    }.from([]).to(containing_exactly(topic)).
-    and change { sns.topics }.from([]).to(containing_exactly(topic))
+      client.user_notifications.reload.sns_topics
+    }.from([]).to(containing_exactly(topic))
+
+    expect(uns.sns_topics).to containing_exactly(topic)
   end
 end
