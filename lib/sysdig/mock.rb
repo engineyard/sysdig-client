@@ -9,6 +9,7 @@ class Sysdig::Mock
     @@data ||= Hash.new { |h,url|
       h[url] = {
         :alerts => {},
+        :alert_notifications => {},
         :user_notifications => {
           "email" => {
             "enabled"    => false,
@@ -81,10 +82,10 @@ class Sysdig::Mock
     alert_data = self.data[:alerts].fetch(alert.identity)
 
     alert_notification = self.data[:alert_notifications][alert_notification_id] = {
-      "timestamp" => Time.now.to_i * 1000,
-      "timespan"  => alert_data["severity"].to_i,
+      "id"        => alert_notification_id,
+      "timestamp" => (Time.now.to_i - rand(60..300)) * 1_000_000,
+      "timespan"  => alert_data["timespan"].to_i,
       "filter"    => alert_data["filter"],
-      "timespan"  => alert_data["timespan"],
       "condition" => alert_data["condition"],
       "state"     => state.upcase,
       "resolved"  => resolved,
@@ -96,6 +97,6 @@ class Sysdig::Mock
       ]
     }
 
-    alert_notification
+    self.alert_notifications.new(alert_notification)
   end
 end
