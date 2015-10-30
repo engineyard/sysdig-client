@@ -8,7 +8,7 @@ class Sysdig::GetAlertNotification < Sysdig::Request
   def mock(notification_id)
     service.response(
       :body => {
-        "notification" => service.data[:alert_notifications].fetch(notification_id)
+        "notification" => service.data[:alert_notifications].fetch(notification_id.to_i)
       },
     )
   end
